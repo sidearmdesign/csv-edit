@@ -67,34 +67,73 @@
             max-width: 100%;
             margin: 0 auto;
             background: var(--bg-secondary);
-            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px var(--shadow);
             transition: background 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px 15px 20px;
+            border-bottom: 2px solid var(--border-color);
         }
 
         h1 {
-            margin-top: 0;
+            margin: 0;
             color: var(--text-primary);
             transition: color 0.3s ease;
+            font-size: 24px;
         }
 
-        .controls {
-            margin-bottom: 20px;
+        .toolbar {
+            padding: 15px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            gap: 10px;
+            gap: 20px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .toolbar-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding-right: 20px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .toolbar-section:last-child {
+            border-right: none;
+        }
+
+        .toolbar-section label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-right: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .content-area {
+            padding: 20px;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 8px 16px;
             background: var(--button-primary);
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 500;
             transition: background 0.2s ease;
+            white-space: nowrap;
         }
 
         button:hover {
@@ -109,29 +148,76 @@
             background: var(--button-secondary-hover);
         }
 
+        button.small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
         button.dark-mode-toggle {
             background: var(--button-secondary);
-            min-width: 120px;
+            padding: 8px 16px;
         }
 
         button.dark-mode-toggle:hover {
             background: var(--button-secondary-hover);
         }
 
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button:disabled:hover {
+            background: var(--button-primary);
+        }
+
+        button.secondary:disabled:hover {
+            background: var(--button-secondary);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
         input[type="file"] {
-            padding: 8px;
-            background: var(--bg-tertiary);
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 8px 16px;
+            background: var(--bg-secondary);
             color: var(--text-primary);
             border: 1px solid var(--border-color);
             border-radius: 4px;
-            transition: background 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .file-input-label:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--button-primary);
+        }
+
+        .file-input-label.has-file {
+            color: var(--button-primary);
+            border-color: var(--button-primary);
         }
 
         .table-container {
             overflow: auto;
-            margin-top: 20px;
             position: relative;
             cursor: grab;
+            max-height: calc(100vh - 320px);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
         }
 
         .table-container.panning {
@@ -170,7 +256,9 @@
             font-weight: 600;
             cursor: pointer;
             user-select: none;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 10;
             color: var(--text-primary);
             transition: background 0.2s ease, color 0.3s ease;
         }
@@ -211,36 +299,68 @@
             background: var(--bg-secondary);
         }
 
+        td.selected {
+            outline: 2px solid var(--outline-color);
+            background: #e3f2fd;
+        }
+
+        body.dark-mode td.selected {
+            background: #1e3a5f;
+        }
+
         tr:nth-child(even) {
             background: var(--row-even);
         }
 
         .info {
-            margin-top: 10px;
-            padding: 10px;
+            padding: 12px 20px;
             background: var(--info-bg);
-            border-radius: 4px;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-primary);
             transition: background 0.3s ease, color 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .paste-area-container {
+            padding: 15px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .paste-area {
             width: 100%;
-            height: 150px;
+            height: 120px;
             margin-bottom: 10px;
             padding: 10px;
-            font-family: monospace;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
             font-size: 12px;
-            border: 1px solid var(--border-color);
+            border: 2px dashed var(--border-color);
             border-radius: 4px;
-            background: var(--bg-tertiary);
+            background: var(--bg-secondary);
             color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        .paste-area:focus {
+            outline: none;
+            border-color: var(--button-primary);
+            background: var(--bg-secondary);
+        }
+
+        .header-buttons {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        th:hover .header-buttons {
+            opacity: 1;
         }
 
         .collapse-btn {
-            margin-left: 8px;
             padding: 2px 6px;
             font-size: 11px;
             background: var(--button-collapse);
@@ -249,26 +369,60 @@
             border-radius: 3px;
             cursor: pointer;
             transition: background 0.2s ease;
+            line-height: 1;
         }
 
         .collapse-btn:hover {
             background: var(--button-collapse-hover);
         }
 
+        .delete-col-btn {
+            padding: 2px 6px;
+            font-size: 11px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            line-height: 1;
+        }
+
+        .delete-col-btn:hover {
+            background: #c82333;
+        }
+
         .row-collapse-btn {
-            padding: 4px 8px;
-            font-size: 12px;
+            padding: 3px 7px;
+            font-size: 11px;
             background: var(--button-collapse);
             color: #000;
             border: none;
             border-radius: 3px;
             cursor: pointer;
-            margin-right: 8px;
+            margin-right: 4px;
             transition: background 0.2s ease;
+            line-height: 1;
         }
 
         .row-collapse-btn:hover {
             background: var(--button-collapse-hover);
+        }
+
+        .row-delete-btn {
+            padding: 3px 7px;
+            font-size: 11px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            line-height: 1;
+        }
+
+        .row-delete-btn:hover {
+            background: #c82333;
         }
 
         .collapsed-column {
@@ -317,8 +471,11 @@
 
         th.row-actions {
             cursor: default;
-            min-width: 60px;
+            min-width: 80px;
+            max-width: 80px;
+            width: 80px;
             text-align: center;
+            font-size: 11px;
         }
 
         th.row-actions:hover {
@@ -327,40 +484,143 @@
 
         td.row-actions {
             text-align: center;
-            padding: 4px;
+            padding: 6px 4px;
+            min-width: 80px;
+            max-width: 80px;
+            width: 80px;
         }
 
         .hidden {
             display: none;
         }
+
+        /* Drag and Drop Overlay */
+        .drop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 123, 255, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        body.dark-mode .drop-overlay {
+            background: rgba(13, 110, 253, 0.95);
+        }
+
+        .drop-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .drop-overlay-content {
+            text-align: center;
+            color: white;
+            pointer-events: none;
+        }
+
+        .drop-overlay-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        .drop-overlay-text {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .drop-overlay-subtext {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>CSV Viewer/Editor</h1>
-
-        <div class="controls">
-            <input type="file" id="fileInput" accept=".csv">
-            <button onclick="loadFromFile()">Load CSV File</button>
-            <button class="secondary" onclick="togglePasteArea()">Paste CSV Data</button>
-            <button onclick="exportCSV()">Download CSV</button>
-            <button class="secondary" onclick="showAll()">Show All</button>
+        <!-- Header -->
+        <div class="header">
+            <h1>CSV Viewer/Editor</h1>
             <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeBtn">🌙 Dark Mode</button>
-            <button class="secondary" onclick="clearTable()">Clear Table</button>
         </div>
 
-        <textarea id="pasteArea" class="paste-area" placeholder="Paste CSV data here..." style="display: none;"></textarea>
-        <button id="loadPasteBtn" onclick="loadFromPaste()" style="display: none;">Load Pasted Data</button>
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <!-- File Operations -->
+            <div class="toolbar-section">
+                <label>File</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".csv" onchange="updateFileLabel()">
+                    <label for="fileInput" class="file-input-label" id="fileLabel">Choose File</label>
+                </div>
+                <button onclick="loadFromFile()">Load</button>
+                <button class="secondary" onclick="togglePasteArea()">Paste</button>
+                <button onclick="exportCSV()">Export</button>
+            </div>
 
+            <!-- Edit Operations -->
+            <div class="toolbar-section">
+                <label>Edit</label>
+                <button id="undoBtn" onclick="undo()" disabled>↶ Undo</button>
+                <button id="redoBtn" onclick="redo()" disabled>↷ Redo</button>
+                <button onclick="addRow()">+ Row</button>
+                <button onclick="addColumn()">+ Column</button>
+            </div>
+
+            <!-- View Operations -->
+            <div class="toolbar-section">
+                <label>View</label>
+                <button class="secondary" onclick="showAll()">Show All</button>
+                <button class="secondary" onclick="clearTable()">Clear</button>
+            </div>
+        </div>
+
+        <!-- Paste Area (hidden by default) -->
+        <div id="pasteAreaContainer" class="paste-area-container" style="display: none;">
+            <textarea id="pasteArea" class="paste-area" placeholder="Paste your CSV data here..."></textarea>
+            <button id="loadPasteBtn" onclick="loadFromPaste()">Load Pasted Data</button>
+        </div>
+
+        <!-- Info Bar -->
         <div class="info" id="info">
-            <strong>Instructions:</strong> Load a CSV file or paste CSV data. Click column headers to sort. Click any cell to edit. Download your changes when done.
+            <strong>Instructions:</strong> Load a CSV file or paste CSV data. Click column headers to sort. Click any cell to edit. Use arrow keys to navigate cells.
         </div>
 
-        <div class="table-container" id="tableContainer">
-            <table id="dataTable"></table>
+        <!-- Content Area -->
+        <div class="content-area">
+            <div class="table-container" id="tableContainer">
+                <table id="dataTable"></table>
+            </div>
         </div>
 
         <div class="pan-hint" id="panHint">Pan Mode Active</div>
+    </div>
+
+    <!-- Drag and Drop Overlay -->
+    <div class="drop-overlay" id="dropOverlay">
+        <div class="drop-overlay-content">
+            <div class="drop-overlay-icon">📁</div>
+            <div class="drop-overlay-text">Drop your CSV file here</div>
+            <div class="drop-overlay-subtext">Release to load automatically</div>
+        </div>
     </div>
 
     <script>
@@ -369,6 +629,14 @@
         let sortState = { column: -1, ascending: true };
         let collapsedColumns = new Set();
         let collapsedRows = new Set();
+
+        // Cell selection for keyboard navigation
+        let selectedCell = { row: -1, col: -1 };
+
+        // Undo/Redo history
+        let history = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 50;
 
         // Panning variables
         let isPanning = false;
@@ -401,15 +669,25 @@
         // Initialize dark mode on page load
         initDarkMode();
 
-        function togglePasteArea() {
-            const pasteArea = document.getElementById('pasteArea');
-            const loadPasteBtn = document.getElementById('loadPasteBtn');
-            if (pasteArea.style.display === 'none') {
-                pasteArea.style.display = 'block';
-                loadPasteBtn.style.display = 'inline-block';
+        function updateFileLabel() {
+            const fileInput = document.getElementById('fileInput');
+            const fileLabel = document.getElementById('fileLabel');
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                fileLabel.textContent = fileName.length > 20 ? fileName.substring(0, 17) + '...' : fileName;
+                fileLabel.classList.add('has-file');
             } else {
-                pasteArea.style.display = 'none';
-                loadPasteBtn.style.display = 'none';
+                fileLabel.textContent = 'Choose File';
+                fileLabel.classList.remove('has-file');
+            }
+        }
+
+        function togglePasteArea() {
+            const pasteAreaContainer = document.getElementById('pasteAreaContainer');
+            if (pasteAreaContainer.style.display === 'none') {
+                pasteAreaContainer.style.display = 'block';
+            } else {
+                pasteAreaContainer.style.display = 'none';
             }
         }
 
@@ -497,9 +775,15 @@
             csvData = rows.slice(1);
             collapsedColumns = new Set();
             collapsedRows = new Set();
+            selectedCell = { row: -1, col: -1 };
+
+            // Reset history
+            history = [];
+            historyIndex = -1;
 
             renderTable();
             updateInfo();
+            saveState();  // Save initial state
         }
 
         function renderTable() {
@@ -536,6 +820,10 @@
                         th.classList.add(sortState.ascending ? 'sorted-asc' : 'sorted-desc');
                     }
 
+                    // Create button container
+                    const buttonContainer = document.createElement('span');
+                    buttonContainer.classList.add('header-buttons');
+
                     const collapseBtn = document.createElement('button');
                     collapseBtn.textContent = '−';
                     collapseBtn.classList.add('collapse-btn');
@@ -544,7 +832,19 @@
                         e.stopPropagation();
                         collapseColumn(index);
                     };
-                    th.appendChild(collapseBtn);
+                    buttonContainer.appendChild(collapseBtn);
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '×';
+                    deleteBtn.classList.add('delete-col-btn');
+                    deleteBtn.title = 'Delete column';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        deleteColumn(index);
+                    };
+                    buttonContainer.appendChild(deleteBtn);
+
+                    th.appendChild(buttonContainer);
                 }
 
                 headerRow.appendChild(th);
@@ -564,7 +864,7 @@
                     tr.classList.add('collapsed-row');
                 }
 
-                // Add collapse/expand row button
+                // Add collapse/expand row button and delete button
                 const actionTd = document.createElement('td');
                 actionTd.classList.add('row-actions');
 
@@ -584,11 +884,23 @@
                     actionTd.appendChild(collapseBtn);
                 }
 
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '×';
+                deleteBtn.classList.add('row-delete-btn');
+                deleteBtn.title = 'Delete row';
+                deleteBtn.onclick = () => deleteRow(rowIndex);
+                actionTd.appendChild(deleteBtn);
+
                 tr.appendChild(actionTd);
 
                 headers.forEach((_, colIndex) => {
                     const td = document.createElement('td');
                     const isColCollapsed = collapsedColumns.has(colIndex);
+
+                    // Mark selected cell
+                    if (rowIndex === selectedCell.row && colIndex === selectedCell.col && !isColCollapsed && !isRowCollapsed) {
+                        td.classList.add('selected');
+                    }
 
                     if (isColCollapsed) {
                         td.classList.add('collapsed-column');
@@ -603,7 +915,15 @@
                     } else {
                         td.contentEditable = 'true';
                         td.textContent = row[colIndex] || '';
+                        td.dataset.row = rowIndex;
+                        td.dataset.col = colIndex;
+
+                        td.onclick = function() {
+                            selectCell(rowIndex, colIndex);
+                        };
+
                         td.onblur = function() {
+                            saveState();
                             csvData[rowIndex][colIndex] = this.textContent;
                         };
                     }
@@ -741,11 +1061,212 @@
                     if (collapsedColumns.size > 0) message += ` | ${collapsedColumns.size} columns collapsed`;
                 }
 
-                message += ' | <strong>Tip:</strong> Middle-click + Drag or SPACE + Drag to pan, Shift + Scroll for horizontal';
+                message += ' | <strong>Tip:</strong> Use arrow keys to navigate, Enter to edit, Tab for next cell';
 
                 info.innerHTML = message;
             } else {
-                info.innerHTML = '<strong>Instructions:</strong> Load a CSV file or paste CSV data. Click column headers to sort. Click any cell to edit. Use collapse buttons to collapse rows/columns. Middle-click + Drag or SPACE + Drag to pan.';
+                info.innerHTML = '<strong>Instructions:</strong> Load a CSV file or paste CSV data. Click column headers to sort. Click any cell to edit. Use arrow keys to navigate cells.';
+            }
+        }
+
+        // Keyboard navigation functions
+        function selectCell(row, col) {
+            selectedCell = { row, col };
+            renderTable();
+        }
+
+        function getCellElement(row, col) {
+            const table = document.getElementById('dataTable');
+            const tbody = table.querySelector('tbody');
+            if (!tbody) return null;
+            const tr = tbody.children[row];
+            if (!tr) return null;
+            // +1 because first td is the actions column
+            return tr.children[col + 1];
+        }
+
+        function moveSelection(deltaRow, deltaCol) {
+            if (csvData.length === 0) return;
+
+            let newRow = selectedCell.row;
+            let newCol = selectedCell.col;
+
+            // If no cell selected, start at 0,0
+            if (newRow === -1 || newCol === -1) {
+                newRow = 0;
+                newCol = 0;
+            } else {
+                newRow += deltaRow;
+                newCol += deltaCol;
+            }
+
+            // Clamp to valid range
+            newRow = Math.max(0, Math.min(csvData.length - 1, newRow));
+            newCol = Math.max(0, Math.min(headers.length - 1, newCol));
+
+            // Skip collapsed columns
+            while (collapsedColumns.has(newCol) && newCol < headers.length - 1) {
+                newCol += (deltaCol > 0 ? 1 : deltaCol < 0 ? -1 : 1);
+            }
+
+            // Skip collapsed rows
+            while (collapsedRows.has(newRow) && newRow < csvData.length - 1) {
+                newRow += (deltaRow > 0 ? 1 : deltaRow < 0 ? -1 : 1);
+            }
+
+            selectCell(newRow, newCol);
+
+            // Scroll to cell if needed
+            const cellElement = getCellElement(newRow, newCol);
+            if (cellElement) {
+                cellElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+            }
+        }
+
+        function startEditingSelectedCell() {
+            if (selectedCell.row >= 0 && selectedCell.col >= 0) {
+                const cellElement = getCellElement(selectedCell.row, selectedCell.col);
+                if (cellElement && cellElement.contentEditable === 'true') {
+                    cellElement.focus();
+                    // Select all text
+                    const range = document.createRange();
+                    range.selectNodeContents(cellElement);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        }
+
+        // Undo/Redo functions
+        function saveState() {
+            const state = {
+                csvData: JSON.parse(JSON.stringify(csvData)),
+                headers: [...headers],
+                collapsedColumns: new Set(collapsedColumns),
+                collapsedRows: new Set(collapsedRows)
+            };
+
+            // Remove any redo history
+            history = history.slice(0, historyIndex + 1);
+
+            history.push(state);
+            if (history.length > MAX_HISTORY) {
+                history.shift();
+            } else {
+                historyIndex++;
+            }
+
+            updateUndoRedoButtons();
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                restoreState(history[historyIndex]);
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                restoreState(history[historyIndex]);
+            }
+        }
+
+        function restoreState(state) {
+            csvData = JSON.parse(JSON.stringify(state.csvData));
+            headers = [...state.headers];
+            collapsedColumns = new Set(state.collapsedColumns);
+            collapsedRows = new Set(state.collapsedRows);
+            renderTable();
+            updateInfo();
+            updateUndoRedoButtons();
+        }
+
+        function updateUndoRedoButtons() {
+            const undoBtn = document.getElementById('undoBtn');
+            const redoBtn = document.getElementById('redoBtn');
+            if (undoBtn) undoBtn.disabled = historyIndex <= 0;
+            if (redoBtn) redoBtn.disabled = historyIndex >= history.length - 1;
+        }
+
+        // Add/Delete row and column functions
+        function addRow() {
+            if (headers.length === 0) {
+                alert('Please load data first');
+                return;
+            }
+            saveState();
+            const newRow = new Array(headers.length).fill('');
+            csvData.push(newRow);
+            renderTable();
+            updateInfo();
+        }
+
+        function deleteRow(rowIndex) {
+            if (confirm(`Delete row ${rowIndex + 1}?`)) {
+                saveState();
+                csvData.splice(rowIndex, 1);
+                collapsedRows.delete(rowIndex);
+                // Update collapsed row indices
+                const newCollapsedRows = new Set();
+                collapsedRows.forEach(idx => {
+                    if (idx > rowIndex) {
+                        newCollapsedRows.add(idx - 1);
+                    } else if (idx < rowIndex) {
+                        newCollapsedRows.add(idx);
+                    }
+                });
+                collapsedRows = newCollapsedRows;
+                if (selectedCell.row === rowIndex) {
+                    selectedCell = { row: -1, col: -1 };
+                } else if (selectedCell.row > rowIndex) {
+                    selectedCell.row--;
+                }
+                renderTable();
+                updateInfo();
+            }
+        }
+
+        function addColumn() {
+            if (csvData.length === 0) {
+                alert('Please load data first');
+                return;
+            }
+            saveState();
+            const newColName = prompt('Enter column name:', `Column ${headers.length + 1}`);
+            if (newColName !== null) {
+                headers.push(newColName);
+                csvData.forEach(row => row.push(''));
+                renderTable();
+                updateInfo();
+            }
+        }
+
+        function deleteColumn(colIndex) {
+            if (confirm(`Delete column "${headers[colIndex]}"?`)) {
+                saveState();
+                headers.splice(colIndex, 1);
+                csvData.forEach(row => row.splice(colIndex, 1));
+                collapsedColumns.delete(colIndex);
+                // Update collapsed column indices
+                const newCollapsedColumns = new Set();
+                collapsedColumns.forEach(idx => {
+                    if (idx > colIndex) {
+                        newCollapsedColumns.add(idx - 1);
+                    } else if (idx < colIndex) {
+                        newCollapsedColumns.add(idx);
+                    }
+                });
+                collapsedColumns = newCollapsedColumns;
+                if (selectedCell.col === colIndex) {
+                    selectedCell = { row: -1, col: -1 };
+                } else if (selectedCell.col > colIndex) {
+                    selectedCell.col--;
+                }
+                renderTable();
+                updateInfo();
             }
         }
 
@@ -753,16 +1274,54 @@
         const tableContainer = document.getElementById('tableContainer');
         const panHint = document.getElementById('panHint');
 
-        // Keyboard events for spacebar
+        // Keyboard events for navigation and spacebar
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' && !spacePressed) {
-                // Don't prevent default if we're editing a cell
-                if (document.activeElement.tagName === 'TD' && document.activeElement.contentEditable === 'true') {
-                    return;
-                }
+            const isEditingCell = document.activeElement.tagName === 'TD' && document.activeElement.contentEditable === 'true';
+
+            // Spacebar for panning
+            if (e.code === 'Space' && !spacePressed && !isEditingCell) {
                 e.preventDefault();
                 spacePressed = true;
                 panHint.classList.add('active');
+                return;
+            }
+
+            // Undo/Redo
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+                e.preventDefault();
+                undo();
+                return;
+            }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'Z' || (e.key === 'z' && e.shiftKey))) {
+                e.preventDefault();
+                redo();
+                return;
+            }
+
+            // Don't handle navigation keys if we're editing a cell
+            if (isEditingCell) {
+                return;
+            }
+
+            // Arrow keys for navigation
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                moveSelection(-1, 0);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                moveSelection(1, 0);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                moveSelection(0, -1);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                moveSelection(0, 1);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                startEditingSelectedCell();
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                moveSelection(0, e.shiftKey ? -1 : 1);
             }
         });
 
@@ -860,6 +1419,70 @@
                 tableContainer.scrollLeft += e.deltaY;
             }
         }, { passive: false });
+
+        // Drag and Drop functionality
+        const dropOverlay = document.getElementById('dropOverlay');
+        let dragCounter = 0;
+
+        // Prevent default drag behavior on the whole document
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // Show overlay when dragging files over the page
+        document.addEventListener('dragenter', (e) => {
+            e.preventDefault();
+            dragCounter++;
+            if (e.dataTransfer.types.includes('Files')) {
+                dropOverlay.classList.add('active');
+            }
+        });
+
+        document.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dragCounter--;
+            if (dragCounter === 0) {
+                dropOverlay.classList.remove('active');
+            }
+        });
+
+        // Handle file drop
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounter = 0;
+            dropOverlay.classList.remove('active');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+
+                // Check if it's a CSV file
+                if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+                    // Update file input and label
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    document.getElementById('fileInput').files = dataTransfer.files;
+                    updateFileLabel();
+
+                    // Automatically load the file
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const csvText = event.target.result;
+                        parseAndRenderCSV(csvText);
+                    };
+                    reader.readAsText(file);
+                } else {
+                    alert('Please drop a CSV file (.csv)');
+                }
+            }
+        });
     </script>
 </body>
 </html>
